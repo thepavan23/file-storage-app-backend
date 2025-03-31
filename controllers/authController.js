@@ -33,16 +33,13 @@ const register = async (req, res) => {
 
             return res.status(200).json({ message: "A new verification code has been sent to your email. Please verify your account." });
         }
-
-        // If the user does not exist, create a new one
-        const hashedPassword = await bcrypt.hash(password, 10);
         const verificationCode = crypto.randomInt(100000, 999999).toString();
         const hashedCode = await bcrypt.hash(verificationCode, 10);
 
         user = new User({
             name,
             email,
-            password: hashedPassword,
+            password,
             verificationCode: hashedCode,
         });
 
